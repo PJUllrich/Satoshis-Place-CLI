@@ -43,6 +43,7 @@ function handleEvent(msg) {
 
 function handleNewOrderResult(msg) {
     qrcode.generate(msg.data['paymentRequest'], {small: true});
+    console.log(msg.data);
     process.stdout.write("> ");
 }
 
