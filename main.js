@@ -2,6 +2,7 @@
 
 var image = require('./image');
 var io = require('socket.io-client');
+var qrcode = require('qrcode-terminal');
 
 const cmds = {
     "settings": 'GET_SETTINGS',
@@ -24,7 +25,7 @@ function setSocket(url) {
         socket.on('error', handleEvent);
         socket.on('GET_LATEST_PIXELS_RESULT', handleEvent);
         socket.on('GET_SETTINGS_RESULT', handleEvent);
-        socket.on('NEW_ORDER_RESULT', handleEvent);
+        socket.on('NEW_ORDER_RESULT', handleNewOrderResult);
         socket.on('ORDER_SETTLED', handleEvent);
 
         if (process.openStdin().listenerCount("data") == 0) {
@@ -37,6 +38,11 @@ function setSocket(url) {
 
 function handleEvent(msg) {
     console.log(msg);
+    process.stdout.write("> ");
+}
+
+function handleNewOrderResult(msg) {
+    qrcode.generate(msg.data['paymentRequest'], {small: true});
     process.stdout.write("> ");
 }
 

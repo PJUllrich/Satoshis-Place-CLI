@@ -27,8 +27,8 @@ function send(socket, args) {
     var filename = args[1];
     var dx = 0, dy = 0;
     if (args.length > 2) {
-        dx = args[2];
-        dy = args[3];
+        dx = parseInt(args[2]);
+        dy = parseInt(args[3]);
     }
 
     getPixels(filename, function(err, content) {
