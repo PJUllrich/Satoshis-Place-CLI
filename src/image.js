@@ -1,6 +1,7 @@
 /* jshint esversion: 6 */
 
 var getPixels = require("get-pixels");
+var socket = require('./socket');
 
 var colors = {
     1: '#ffffff',
@@ -23,7 +24,7 @@ var colors = {
 
 var nearestColor = require('nearest-color').from(colors);
 
-function send(socket, args) {
+function send(args) {
     var filename = args[1];
     var dx = 0, dy = 0;
     if (args.length > 2) {
