@@ -33,23 +33,28 @@ function send(args) {
     }
 
     getPixels(filename, function(err, content) {
-        var data = [];
-        var counter = 0;
-        for (var y = 0; y < content.shape[1]; y++) {
-            for (var x = 0; x < content.shape[0]; x++) {
-                start = counter * 4;
-                r = content.data[start];
-                g = content.data[start+1];
-                b = content.data[start+2];
-
-                var hex = "#" + toHex(r) + toHex(g) + toHex(b);
-                var color = nearestColor(hex).value;
-                data.push({"coordinates": [x + dx, y + dy], "color": color});
-                counter++;
-            }
-        }
+        let data = toPixelInfo(content, dx, dy);
         socket.emit('NEW_ORDER', data);
     });
+}
+
+function toPixelInfo(content, dx, dy) {
+    var data = [];
+    var counter = 0;
+    for (var y = 0; y < content.shape[1]; y++) {
+        for (var x = 0; x < content.shape[0]; x++) {
+            start = counter * 4;
+            r = content.data[start];
+            g = content.data[start+1];
+            b = content.data[start+2];
+
+            var hex = "#" + toHex(r) + toHex(g) + toHex(b);
+            var color = nearestColor(hex).value;
+            data.push({"coordinates": [x + dx, y + dy], "color": color});
+            counter++;
+        }
+    }
+    return data;
 }
 
 function toHex(c) {
@@ -58,5 +63,6 @@ function toHex(c) {
 }
 
 module.exports = {
-    send
+    send,
+    toPixelInfo
 };

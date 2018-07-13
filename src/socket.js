@@ -16,7 +16,7 @@ function connect(url) {
 
     url = typeof url !== 'undefined' ? url : API_MAIN;
     sock = io(url);
-    sock.on('connect', a => {
+    sock.on('connect', function() {
         sock.on('error', handleEvent);
         sock.on('GET_LATEST_PIXELS_RESULT', handleEvent);
         sock.on('GET_SETTINGS_RESULT', handleEvent);
@@ -36,7 +36,7 @@ function handleNewOrderResult(msg) {
         qrcode.generate(msg.data.paymentRequest, {small: true});
         printer.print(msg.data);
     } else {
-        printer.print('An error occurred: ' + JSON.stringify(msg));
+        console.err('An error occurred: ' + JSON.stringify(msg));
     }
 }
 
